@@ -8,22 +8,11 @@ require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: "http://localhost:5000" }));
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/", router);
 const port = process.env.PORT || 5000;
-
-const allowCrossDomain = function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", "http://localhost:5000/");
-	res.header("Access-Control-Allow-Credentials", true);
-	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-	res.header(
-		"Access-Control-Allow-Headers",
-		"Origin, X-Requested-With, Content-Type, Accept"
-	);
-	next();
-};
 
 mongoose
 	.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/meetingsDB", {
