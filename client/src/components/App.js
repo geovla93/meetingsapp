@@ -10,7 +10,7 @@ function App() {
 
 	function deleteAllMeetings() {
 		axios
-			.delete("http://localhost:3001/deleteall")
+			.delete("https://athletes-foot.herokuapp.com/deleteall")
 			.then((res) => {
 				console.log(res);
 				setMeetings([]);
@@ -22,7 +22,7 @@ function App() {
 
 	function deleteMeeting(id) {
 		axios
-			.delete(`http://localhost:3001/delete/${id}`)
+			.delete(`https://athletes-foot.herokuapp.com/delete/${id}`)
 			.then((res) => {
 				console.log(res);
 				setMeetings((prevMeetings) => {
@@ -38,7 +38,7 @@ function App() {
 
 	function getMeetings() {
 		axios
-			.get("http://localhost:3001/")
+			.get("https://athletes-foot.herokuapp.com/")
 			.then((res) => {
 				setMeetings(res.data);
 			})
