@@ -9,7 +9,7 @@ require("dotenv").config();
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
 app.use(bodyParser.json());
 app.use("/", router);
 const port = process.env.PORT || 5000;
