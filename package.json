@@ -6,12 +6,17 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node server.js",
-		"server": "nodemon server.js"
+		"server": "nodemon server.js",
+		"install-client": "npm i --prefix client",
+		"client": "npm start --prefix client",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"build-client": "npm run build --prefix client"
 	},
 	"author": "George Vlassis",
 	"license": "ISC",
 	"dependencies": {
 		"body-parser": "^1.19.0",
+		"concurrently": "^6.0.0",
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
 		"mongoose": "^5.11.19"

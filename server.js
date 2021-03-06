@@ -11,13 +11,13 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/", router);
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "client", "build")));
 const port = process.env.PORT || 3001;
 
 mongoose
 	.connect(
 		"mongodb+srv://admin-george:y7TlT.eR@cluster0.jt9lv.mongodb.net/meetingsDB",
-		{ useNewUrlParser: true, useUnifiedTopology: true }
+		{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 	)
 	.then(
 		() => {
@@ -84,7 +84,7 @@ router.route("/delete/:id").delete((req, res, next) => {
 });
 
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "build", "index.html"));
+	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 app.listen(port, () => {
