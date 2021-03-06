@@ -29,7 +29,7 @@ function CreateArea(props) {
 		};
 
 		axios
-			.post("https://athletes-foot.herokuapp.com/create", meetingObject)
+			.post(process.env.REACT_APP_FETCH_URL + "/create", meetingObject)
 			.then((res) => {
 				console.log(res.data);
 				props.onAdd();
