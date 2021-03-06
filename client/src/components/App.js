@@ -10,7 +10,7 @@ function App() {
 
 	function deleteAllMeetings() {
 		axios
-			.delete(process.env.REACT_APP_FETCH_URL + "/deleteall")
+			.delete(process.env.REACT_APP_FETCH_URL + "/api/meetings/deleteall")
 			.then((res) => {
 				console.log(res);
 				setMeetings([]);
@@ -22,7 +22,7 @@ function App() {
 
 	function deleteMeeting(id) {
 		axios
-			.delete(process.env.REACT_APP_FETCH_URL + "/delete/" + id)
+			.delete(process.env.REACT_APP_FETCH_URL + "/api/meetings/delete/" + id)
 			.then((res) => {
 				console.log(res);
 				setMeetings((prevMeetings) => {
@@ -38,7 +38,7 @@ function App() {
 
 	function getMeetings() {
 		axios
-			.get(process.env.REACT_APP_FETCH_URL + "/")
+			.get(process.env.REACT_APP_FETCH_URL + "/api/meetings")
 			.then((res) => {
 				setMeetings(res.data);
 			})
