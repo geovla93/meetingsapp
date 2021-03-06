@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
-app.use("/api/meetings", router);
+app.use("/api", router);
 const port = process.env.PORT || 5000;
 
 mongoose
@@ -37,7 +37,7 @@ const meetingsSchema = mongoose.Schema({
 
 const Meeting = mongoose.model("Meeting", meetingsSchema);
 
-router.route("/api/meetings/create").post((req, res) => {
+router.route("/meetings/create").post((req, res) => {
 	const newMeeting = new Meeting({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
@@ -53,7 +53,7 @@ router.route("/api/meetings/create").post((req, res) => {
 	});
 });
 
-router.route("/api/meetings").get((req, res) => {
+router.route("/meetings").get((req, res) => {
 	Meeting.find((error, meetings) => {
 		if (error) {
 			console.log(error);
@@ -63,7 +63,7 @@ router.route("/api/meetings").get((req, res) => {
 	});
 });
 
-router.route("api/meetings/deleteall").delete((req, res) => {
+router.route("/meetings/deleteall").delete((req, res) => {
 	Meeting.deleteMany({}, (err) => {
 		if (err) {
 			console.log(err);
@@ -73,7 +73,7 @@ router.route("api/meetings/deleteall").delete((req, res) => {
 	});
 });
 
-router.route("api/meetings/delete/:id").delete((req, res, next) => {
+router.route("/meetings/delete/:id").delete((req, res, next) => {
 	Meeting.findByIdAndRemove(req.params.id, (err, data) => {
 		if (err) {
 			return next(err);
