@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
-app.use("/api", router);
+app.use("/", router);
 const port = process.env.PORT || 5000;
 
 mongoose

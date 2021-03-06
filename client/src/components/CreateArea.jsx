@@ -29,10 +29,7 @@ function CreateArea(props) {
 		};
 
 		axios
-			.post(
-				process.env.REACT_APP_FETCH_URL + "/api/meetings/create",
-				meetingObject
-			)
+			.post(process.env.REACT_APP_FETCH_URL + "/meetings/create", meetingObject)
 			.then((res) => {
 				console.log(res.data);
 				props.onAdd();
