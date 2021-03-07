@@ -38,7 +38,7 @@ function App() {
 
 	function getMeetings() {
 		axios
-			.get(process.env.REACT_APP_FETCH_URL + "/")
+			.get(process.env.REACT_APP_FETCH_URL + "/meetings")
 			.then((res) => {
 				setMeetings(res.data);
 			})

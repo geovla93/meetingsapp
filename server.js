@@ -53,7 +53,7 @@ router.route("/create").post((req, res) => {
 	});
 });
 
-router.route("/").get((req, res) => {
+router.route("/meetings").get((req, res) => {
 	Meeting.find((error, meetings) => {
 		if (error) {
 			console.log(error);
