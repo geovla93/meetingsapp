@@ -1,15 +1,16 @@
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
-import axios from "axios";
 
 function CreateArea(props) {
-	const [meeting, setMeeting] = React.useState({
+	const userInfo = {
 		firstName: "",
 		lastName: "",
 		number: Number,
 		time: "",
-	});
+		people: Number,
+	};
+	const [meeting, setMeeting] = React.useState(userInfo);
 
 	function updateMeeting(e) {
 		const { name, value } = e.target;
@@ -20,29 +21,8 @@ function CreateArea(props) {
 
 	function submitMeeting(e) {
 		e.preventDefault();
-
-		const meetingObject = {
-			firstName: meeting.firstName,
-			lastName: meeting.lastName,
-			number: meeting.number,
-			time: meeting.time,
-		};
-
-		axios
-			.post(process.env.REACT_APP_FETCH_URL + "/create", meetingObject)
-			.then((res) => {
-				console.log(res.data);
-				props.onAdd();
-				setMeeting({
-					firstName: "",
-					lastName: "",
-					number: Number,
-					time: "",
-				});
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		props.onAdd(meeting);
+		setMeeting(userInfo);
 	}
 
 	return (
@@ -73,6 +53,13 @@ function CreateArea(props) {
 					value={meeting.time}
 					name="time"
 					placeholder="Ώρα"
+				/>
+				<input
+					type="number"
+					onChange={updateMeeting}
+					value={meeting.people}
+					name="people"
+					placeholder="Άτομα"
 				/>
 				<Fab type="submit" onClick={submitMeeting}>
 					<AddIcon />

@@ -18,6 +18,8 @@ function Meeting(props) {
 				Κινητό: {meeting.number}
 				<br />
 				Ώρα: {meeting.time}
+				<br />
+				Άτομα: {meeting.people}
 			</p>
 
 			<Fab onClick={deleteClicked}>
