@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 5000;
+app.use(express.static(path.join("client", "build")));
 
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
@@ -18,7 +19,13 @@ app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 	next();
 });
+
 app.use(meetingRoutes);
+
+app.use((req, res, next) => {
+	res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
+
 app.use((error, req, res, next) => {
 	const status = error.statusCode || 500;
 	const message = error.message;
@@ -41,12 +48,12 @@ mongoose
 		}
 	);
 
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static("client/build"));
-	app.get("/*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-	});
-}
+// if (process.env.NODE_ENV === "production") {
+// 	app.use(express.static(path.join("client", "build")));
+// 	app.get("/*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+// 	});
+// }
 
 app.listen(port, () => {
 	console.log(`Server running on localhost:${port}`);
