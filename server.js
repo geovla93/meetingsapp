@@ -1,38 +1,18 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const cors = require("cors");
-const meetingRoutes = require("./routes/meeting");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const port = process.env.PORT || 5000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json());
-const port = process.env.PORT || 5000;
-app.use(express.static(path.join("client", "build")));
 
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE");
-	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-	next();
-});
+app.use(express.static(path.join(__dirname, "client/build")));
 
-app.use(meetingRoutes);
-
-app.use((req, res, next) => {
-	res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-});
-
-app.use((error, req, res, next) => {
-	const status = error.statusCode || 500;
-	const message = error.message;
-	const data = error.data;
-	res.status(status).json({ message: message, data: data });
-});
-
+mongoose.Promise = global.Promise;
 mongoose
 	.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/meetingsDB", {
 		useNewUrlParser: true,
@@ -48,12 +28,58 @@ mongoose
 		}
 	);
 
-// if (process.env.NODE_ENV === "production") {
-// 	app.use(express.static(path.join("client", "build")));
-// 	app.get("/*", (req, res) => {
-// 		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// 	});
-// }
+const Meeting = require("./models/meeting");
+
+app
+	.route("/api/meetings")
+	.get((req, res) => {
+		Meeting.find((err, foundMeetings) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.json(foundMeetings);
+			}
+		});
+	})
+	.post((req, res) => {
+		const newMeeting = new Meeting({
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			number: req.body.number,
+			time: req.body.time,
+			people: req.body.people,
+		});
+		newMeeting.save((err) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.send("Successfully added new meeting.");
+			}
+		});
+	})
+	.delete((req, res) => {
+		Meeting.deleteMany((err) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.send("Successfully deleted all meetings!");
+			}
+		});
+	});
+
+app.route("/api/meetings/:id").delete((req, res) => {
+	Meeting.deleteOne({ _id: req.params.id }, (err) => {
+		if (err) {
+			console.log(err);
+		} else {
+			res.send("Successfully deleted the meeting.");
+		}
+	});
+});
+
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 app.listen(port, () => {
 	console.log(`Server running on localhost:${port}`);

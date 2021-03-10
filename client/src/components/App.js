@@ -3,98 +3,56 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Meeting from "./Meeting";
 import CreateArea from "./CreateArea";
+import axios from "axios";
 
 function App() {
 	const [meetings, setMeetings] = React.useState([]);
 
-	const postMeeting = async (formData) => {
-		try {
-			const res = await fetch(process.env.REACT_APP_FETCH_URL + "/meeting", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					firstName: formData.firstName,
-					lastName: formData.lastName,
-					number: formData.number,
-					time: formData.time,
-					people: formData.people,
-				}),
+	const postMeeting = (formData) => {
+		axios.post("/api/meetings", formData).then(() => {
+			setMeetings((prevMeetings) => {
+				return [...prevMeetings, formData];
 			});
-			if (res.status !== 200 && res.status !== 201) {
-				throw new Error("Adding new meeting failed");
-			}
-			const resData = await res.json();
-			const updateMeetings = [resData.meeting, ...meetings];
-			setMeetings(updateMeetings);
-		} catch (err) {
-			console.log(err);
-		}
+		});
 	};
 
-	const deleteMeeting = async (id) => {
-		try {
-			const res = await fetch(
-				process.env.REACT_APP_FETCH_URL + "/meeting/" + id,
-				{
-					method: "DELETE",
-				}
-			);
-			if (res.status !== 200) {
-				throw new Error("Deleting meeting failed");
-			}
-			await res.json();
-			const updateMeetings = meetings.filter((meeting) => meeting._id !== id);
-			setMeetings(updateMeetings);
-		} catch (err) {
-			console.log(err);
-		}
+	const removeMeeting = (id) => {
+		axios.delete("/api/meetings/" + id).then((res) => {
+			setMeetings((prevMeetings) => {
+				return prevMeetings.filter((meeting) => {
+					return id !== meeting._id;
+				});
+			});
+		});
 	};
 
-	const deleteAllMeetings = async () => {
-		try {
-			const res = await fetch(process.env.REACT_APP_FETCH_URL + "/meeting", {
-				method: "DELETE",
-			});
-			if (res.status !== 200) {
-				throw new Error("Deleting all meetings failed");
-			}
-			await res.json();
-			const updateMeetings = [];
-			setMeetings(updateMeetings);
-		} catch (err) {
-			console.log(err);
-		}
+	const removeAllMeetings = () => {
+		axios.delete("/api/meetings").then((res) => {
+			setMeetings([]);
+		});
 	};
 
-	const getMeetings = async () => {
-		try {
-			const res = await fetch(process.env.REACT_APP_FETCH_URL + "/meeting", {
-				method: "GET",
-			});
-			if (res.status !== 200) {
-				throw new Error("Fetching meetings failed");
-			}
-			const resData = await res.json();
-			setMeetings(resData.meetings);
-		} catch (err) {
-			console.log(err);
-		}
+	const loadMeetings = () => {
+		axios.get("/api/meetings").then((res) => {
+			const allMeetings = res.data;
+			setMeetings(allMeetings);
+		});
 	};
 
 	React.useEffect(() => {
-		getMeetings();
+		loadMeetings();
 	}, []);
 
 	return (
 		<div>
-			<Header onDeleteAll={deleteAllMeetings} />
+			<Header onDeleteAll={removeAllMeetings} />
 			<CreateArea onAdd={postMeeting} />
 			{meetings.map((meeting) => {
 				return (
 					<Meeting
 						key={meeting._id}
 						meeting={meeting}
-						onDelete={deleteMeeting}
+						onDelete={removeMeeting}
 					/>
 				);
 			})}
