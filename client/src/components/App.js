@@ -28,12 +28,6 @@ function App() {
 		});
 	};
 
-	const removeAllMeetings = () => {
-		axios.delete("/api/meetings").then((res) => {
-			setMeetings([]);
-		});
-	};
-
 	const loadMeetings = () => {
 		axios.get("/api/meetings").then((res) => {
 			const allMeetings = res.data;
@@ -47,7 +41,7 @@ function App() {
 
 	return (
 		<div>
-			<Header onDeleteAll={removeAllMeetings} />
+			<Header />
 			<CreateArea onAdd={postMeeting} />
 			<Container fluid>
 				<Row>

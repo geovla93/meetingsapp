@@ -59,15 +59,6 @@ app
 				res.send("Successfully added new meeting.");
 			}
 		});
-	})
-	.delete((req, res) => {
-		Meeting.deleteMany((err) => {
-			if (err) {
-				console.log(err);
-			} else {
-				res.send("Successfully deleted all meetings!");
-			}
-		});
 	});
 
 app.route("/api/meetings/:id").delete((req, res) => {
