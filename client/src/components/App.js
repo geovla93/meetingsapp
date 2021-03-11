@@ -1,9 +1,11 @@
 import React from "react";
 import Header from "./Header";
-import Footer from "./Footer";
 import Meeting from "./Meeting";
 import CreateArea from "./CreateArea";
 import axios from "axios";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 function App() {
 	const [meetings, setMeetings] = React.useState([]);
@@ -47,16 +49,21 @@ function App() {
 		<div>
 			<Header onDeleteAll={removeAllMeetings} />
 			<CreateArea onAdd={postMeeting} />
-			{meetings.map((meeting) => {
-				return (
-					<Meeting
-						key={meeting._id}
-						meeting={meeting}
-						onDelete={removeMeeting}
-					/>
-				);
-			})}
-			<Footer />
+			<Container fluid>
+				<Row>
+					{meetings.map((meeting) => {
+						return (
+							<Col xs={3}>
+								<Meeting
+									key={meeting._id}
+									meeting={meeting}
+									onDelete={removeMeeting}
+								/>
+							</Col>
+						);
+					})}
+				</Row>
+			</Container>
 		</div>
 	);
 }
