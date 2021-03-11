@@ -7,6 +7,7 @@ function CreateArea(props) {
 		firstName: "",
 		lastName: "",
 		number: Number,
+		date: Date,
 		time: "",
 		people: Number,
 	};
@@ -47,6 +48,12 @@ function CreateArea(props) {
 					value={meeting.number}
 					name="number"
 					placeholder="Κινητό"
+				/>
+				<input
+					onChange={updateMeeting}
+					value={meeting.date}
+					name="date"
+					placeholder="Ημερομηνία"
 				/>
 				<input
 					onChange={updateMeeting}

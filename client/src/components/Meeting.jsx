@@ -17,6 +17,8 @@ function Meeting(props) {
 			<p>
 				Κινητό: {meeting.number}
 				<br />
+				Ημερομηνία: {meeting.date}
+				<br />
 				Ώρα: {meeting.time}
 				<br />
 				Άτομα: {meeting.people}

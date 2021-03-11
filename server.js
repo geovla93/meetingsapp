@@ -39,13 +39,16 @@ app
 			} else {
 				res.json(foundMeetings);
 			}
-		});
+		})
+			.sort({ createdAt: "desc" })
+			.exec();
 	})
 	.post((req, res) => {
 		const newMeeting = new Meeting({
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			number: req.body.number,
+			date: req.body.date,
 			time: req.body.time,
 			people: req.body.people,
 		});
