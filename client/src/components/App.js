@@ -37,7 +37,7 @@ function App() {
 
 	React.useEffect(() => {
 		loadMeetings();
-	}, []);
+	}, [meetings]);
 
 	return (
 		<div>
